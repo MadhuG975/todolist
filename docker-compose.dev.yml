@@ -1,0 +1,11 @@
+````yaml
+# filepath: /Users/ajaydurgawale/todo-task/todo-task/docker-compose.dev.yml
+services:
+  app:
+    build: .
+    ports:
+      - "3000:3000"
+    environment:
+      NODE_ENV: development
+      SECRET_KEY: ${SECRET_KEY_DEV:?SECRET_KEY_DEV is required}
+      CLIENT_ID: ${CLIENT_ID_DEV:?CLIENT_ID_DEV is required}

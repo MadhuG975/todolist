@@ -1,0 +1,36 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: task-app-deployment
+  labels:
+    app: task-app
+spec:
+  replicas: 2               # Runs 2 copies of your app for redundancy
+  selector:
+    matchLabels:
+      app: task-app
+  template:
+    metadata:
+      labels:
+        app: task-app
+    spec:
+      containers:
+      - name: task-app
+        image: todo-list:latest   # Replace with your Docker image name
+        imagePullPolicy: IfNotPresent
+        ports:
+        - containerPort: 80       # Port inside the container (80 for Nginx, 3000 for serve)
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: task-app-service
+spec:
+  type: NodePort                  # Exposes the service locally
+  selector:
+    app: task-app
+  ports:
+  - protocol: TCP
+    port: 80                      # Service port
+    targetPort: 80                # Target port inside container
+    nodePort: 30080               # Port to access from your local browser
